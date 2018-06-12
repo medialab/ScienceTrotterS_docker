@@ -1,4 +1,4 @@
-#Science TrotterS docker backend Infra
+# Science TrotterS docker backend Infra
 
 ## update the sumodules
 
@@ -32,10 +32,10 @@ To be done only once to install PHP depedencies and to hydrate the database with
 
 # TO DO 
 
--[ ] add SSL conf to API nginx
--[ ] add host and port conf in env variables in submodules
--[ ] add admin password in configuration
--[ ] limit submodules to dpeth = 1
--[ ] move composer isntall to Dockerfile
--[ ] add a database backup volume
--[ ] add an upload volume
+- add SSL conf to API nginx
+- ~~add host and port conf in env variables in submodules~~
+- ~~add admin password in configuration~~
+- limit submodules to depth = 1
+- move composer isntall to Dockerfile
+- add a database backup volume
+- add an upload volume
