@@ -1,0 +1,32 @@
+version: "2"
+services:
+  api:
+    image: nginx:latest
+    volumes:
+      - ./ScienceTrotterS_API:/api
+      - ./api.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - backend
+  backoffice:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./ScienceTrotterS_backoffice:/backoffice
+      - ./backoffice.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - backend
+  php:
+    image: phpcomposer:latest
+    env_file:
+      - postgres.env
+    networks:
+      - backend
+  db:
+    image: postgres:latest
+    networks:
+      - backend
+    env_file:
+      - postgres.env
+networks:
+  backend:
