@@ -20,6 +20,7 @@ services:
     image: phpcomposer:latest
     env_file:
       - postgres.env
+      - php.env
     networks:
       - backend
   db:
