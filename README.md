@@ -7,7 +7,7 @@ The Docker will host code from :
 - the backoffice : https://github.com/medialab/ScienceTrotterS_backoffice
 
 ```bash
-git submodule update
+git submodule update --remote
 ```
 
 ## Build the PHP container
@@ -35,7 +35,7 @@ To be done only once to install PHP depedencies and to hydrate the database with
 - add SSL conf to API nginx
 - ~~add host and port conf in env variables in submodules~~
 - ~~add admin password in configuration~~
-- limit submodules to depth = 1
+- ~~limit submodules to depth = 1~~
 - move composer isntall to Dockerfile
 - add a database backup volume
 - add an upload volume
