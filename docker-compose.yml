@@ -18,6 +18,10 @@ services:
       - ./backoffice.conf:/etc/nginx/conf.d/default.conf
     networks:
       - backend
+  mobile_app:
+    image: mobile_app:latest
+    ports:
+      - "8081:80"
   php:
     image: phpcomposer:latest
     env_file:

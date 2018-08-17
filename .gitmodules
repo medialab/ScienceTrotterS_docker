@@ -8,3 +8,8 @@
 	url = git@github.com:medialab/ScienceTrotterS_backoffice.git
 	branch = pprd
 	shallow = true
+[submodule "ScienceTrotterS_mobile"]
+	path = ScienceTrotterS_mobile
+	url = git@github.com:medialab/ScienceTrotterS_mobile.git
+	branch = pprd
+	shallow = true
