@@ -1,15 +1,15 @@
 [submodule "ScienceTrotterS_API"]
 	path = ScienceTrotterS_API
-	url = git@github.com:medialab/ScienceTrotterS_API.git
+	url = https://github.com/medialab/ScienceTrotterS_API.git
 	branch = pprd
 	shallow = true
 [submodule "ScienceTrotterS_backoffice"]
 	path = ScienceTrotterS_backoffice
-	url = git@github.com:medialab/ScienceTrotterS_backoffice.git
+	url = https://github.com/medialab/ScienceTrotterS_backoffice.git
 	branch = pprd
 	shallow = true
 [submodule "ScienceTrotterS_mobile"]
 	path = ScienceTrotterS_mobile
-	url = git@github.com:medialab/ScienceTrotterS_mobile.git
+	url = https://github.com/medialab/ScienceTrotterS_mobile.git
 	branch = pprd
 	shallow = true
