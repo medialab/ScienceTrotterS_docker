@@ -7,6 +7,7 @@ services:
     volumes:
       - ./ScienceTrotterS_API:/api
       - ./api.conf:/etc/nginx/conf.d/default.conf
+      - api_ressources:/api/public/ressources
     networks:
       - backend
   backoffice:
@@ -16,6 +17,7 @@ services:
     volumes:
       - ./ScienceTrotterS_backoffice:/backoffice
       - ./backoffice.conf:/etc/nginx/conf.d/default.conf
+      - backoffice_ressources:/backoffice/public/ressources
     networks:
       - backend
   mobile_app:
@@ -29,6 +31,9 @@ services:
       - php.env
     networks:
       - backend
+    volumes:
+      - api_ressources:/api/public/ressources
+      - backoffice_ressources:/backoffice/public/ressources
   db:
     image: postgres:latest
     networks:
@@ -37,3 +42,6 @@ services:
       - postgres.env
 networks:
   backend:
+volumes:
+     backoffice_ressources:
+     api_ressources: 
