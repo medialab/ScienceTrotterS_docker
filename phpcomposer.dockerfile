@@ -1,4 +1,4 @@
-FROM php:7-fpm
+FROM php:7.2-fpm
 
 RUN apt-get update 
 RUN apt-get -y --no-install-recommends install git unzip zip libpq-dev vim
