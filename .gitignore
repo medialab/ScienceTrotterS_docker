@@ -1,1 +1,3 @@
 map_api.key
+php.env
+postgres.env
