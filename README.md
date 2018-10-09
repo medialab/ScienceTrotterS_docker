@@ -28,7 +28,7 @@ The API public URL must be specified in mobile_app.dockerfile env variable befor
 
 A PHP 7 container in which we add php-composer
 ```bash
-docker build -t phpcomposer -f phpcomposer.dockerfile .
+docker build --build-arg DEVMODE=true -t phpcomposer -f phpcomposer.dockerfile .
 ```
 
 ### mobile_app
