@@ -21,6 +21,7 @@ RUN cp /backoffice/config/defines.default.php /backoffice/config/defines.php
 
 WORKDIR /api
 
+RUN composer install --no-dev
 RUN cp /api/config/conf.default.php /api/config/conf.php
 
 USER www-data
