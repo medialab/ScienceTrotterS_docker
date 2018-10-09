@@ -15,6 +15,8 @@ COPY ./ScienceTrotterS_backoffice /backoffice
 
 RUN chown -R www-data:www-data /api /api/* /var/www/ /backoffice /backoffice*
 
+USER www-data
+
 WORKDIR /backoffice
 
 RUN cp /backoffice/config/defines.default.php /backoffice/config/defines.php
@@ -24,4 +26,3 @@ WORKDIR /api
 RUN composer install --no-dev
 RUN cp /api/config/conf.default.php /api/config/conf.php
 
-USER www-data
