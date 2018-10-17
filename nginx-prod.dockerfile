@@ -11,14 +11,14 @@ COPY /ScienceTrotterS_backoffice /backoffice
 WORKDIR /mobile_app
 
 RUN apk update \
-    && apk add git nodejs npm jq \
+    && apk add git nodejs jq \
 	&& jq '.configuration.endpoint.data=env.API_URL | .configuration.endpoint.assets="\(env.API_URL)/ressources/uploads"' src/manifest.json > src/manifest.new.json \
 	&& mv src/manifest.new.json src/manifest.json \
 	&& npm install ionic@3.19.1 \
     && npm install \
     && npm run build\
     && npm cache clean --force \
-    && apk del git nodejs npm jq \
+    && apk del git nodejs jq \
     && rm -fr node_modules \
     && rm /var/cache/apk/*
 
