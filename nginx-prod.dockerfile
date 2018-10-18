@@ -22,6 +22,14 @@ RUN apk update \
     && rm -fr node_modules \
     && rm /var/cache/apk/*
 
-COPY ./nginx-prod.conf /etc/nginx/conf.d/default.conf
+COPY ./nginx-prod.conf /etc/nginx/conf.d/default.template
+
+RUN apk --no-cache add shadow && usermod -u 82 nginx && groupmod -g 82 nginx
+
+COPY nginx-prod.entrypoint /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
 
 CMD ["nginx", "-g", "daemon off;"]

@@ -1,0 +1,8 @@
+#!/bin/sh 
+
+export NS=$(cat /etc/resolv.conf |grep nameserver|awk -F" " '{print $2}')
+
+envsubst '\$NS \$API_URL  \$UPLOAD_PATH' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf
+
+exec "$@"
+
