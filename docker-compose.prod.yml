@@ -11,6 +11,8 @@ services:
       - php:php
     networks:
       - backend
+    environment:
+      - UPLOAD_PATH=${UPLOAD_PATH}
     env_file:
       - php.env
     depends_on:
@@ -23,6 +25,8 @@ services:
       dockerfile: phpcomposer.dockerfile
       context: .
     image: scpomedialab/sts_php:prod
+    environment:
+      - UPLOAD_PATH=${UPLOAD_PATH}
     env_file:
       - postgres.env
       - php.env
