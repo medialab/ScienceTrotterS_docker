@@ -12,7 +12,7 @@ WORKDIR /mobile_app
 
 RUN apk update \
     && apk add git nodejs jq \
-	&& jq '.configuration.endpoint.data=env.API_URL | .configuration.endpoint.assets="\(env.API_URL)/ressources/uploads"' src/manifest.json > src/manifest.new.json \
+	&& jq '.configuration.endpoint.data=env.API_URL | .configuration.endpoint.assets="\(env.API_URL)/ressources/upload/"' src/manifest.json > src/manifest.new.json \
 	&& mv src/manifest.new.json src/manifest.json \
 	&& npm install ionic@3.19.1 \
     && npm install \
