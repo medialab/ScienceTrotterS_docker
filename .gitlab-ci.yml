@@ -5,15 +5,16 @@ stages:
 - deploy
 
 variables:
-  WEB_IMAGE_NAME: $CI_REGISTRY_IMAGE/sts_web:$CI_COMMIT_REF_SLUG
+  WEB_BACKOFFICE_IMAGE_NAME: $CI_REGISTRY_IMAGE/sts_web_backoffice:$CI_COMMIT_REF_SLUG
+  WEB_API_MOBILE_IMAGE_NAME: $CI_REGISTRY_IMAGE/sts_web_api_mobile:$CI_COMMIT_REF_SLUG
   PHP_IMAGE_NAME: $CI_REGISTRY_IMAGE/sts_php:$CI_COMMIT_REF_SLUG
   GIT_SUBMODULE_STRATEGY: recursive
   
-build_web_staging:
+build_web_api_staging:
   stage: build
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - docker build --build-arg "API_URL=$CI_ENVIRONMENT_URL/api" -t $WEB_IMAGE_NAME -f nginx-prod.dockerfile .
+    - docker build --build-arg "API_URL=$CI_ENVIRONMENT_URL/api" -t $WEB_IMAGE_NAME -f nginx-API-mobile.dockerfile .
     - docker push $WEB_IMAGE_NAME
   environment:
     name: staging
@@ -21,17 +22,41 @@ build_web_staging:
   only:
     - staging
    
-build_web_prod:
+build_web_api_prod:
   stage: build
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - docker build --build-arg "API_URL=$CI_ENVIRONMENT_URL/api" -t $WEB_IMAGE_NAME -f nginx-prod.dockerfile .
+    - docker build --build-arg "API_URL=$CI_ENVIRONMENT_URL/api" -t $WEB_IMAGE_NAME -f nginx-API-mobile.dockerfile .
     - docker push $WEB_IMAGE_NAME
   environment:
     name: production
     url: https://sts.medialab.sciences-po.fr
   only:
     - production
+
+build_web_backoffice_staging:
+  stage: build
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker build --build-arg "API_URL=$CI_ENVIRONMENT_URL/api" -t $WEB_IMAGE_NAME -f nginx-backoffice.dockerfile .
+    - docker push $WEB_IMAGE_NAME
+  environment:
+    name: staging
+    url: http://sts-backoffice-pprd.medialab.sciences-po.fr
+  only:
+    - staging
+
+build_web_backoffice_staging:
+  stage: build
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker build --build-arg "API_URL=$CI_ENVIRONMENT_URL/api" -t $WEB_IMAGE_NAME -f nginx-backoffice.dockerfile .
+    - docker push $WEB_IMAGE_NAME
+  environment:
+    name: staging
+    url: http://sts-backoffice.medialab.sciences-po.fr
+  only:
+    - staging
 
 build_php:
   stage: build
@@ -48,7 +73,8 @@ deploy_staging:
   image: cdrx/rancher-gitlab-deploy
   script:
     - upgrade --rancher-key $RANCHER_ACCESS_KEY --rancher-secret $RANCHER_SECRET_KEY --rancher-url $RANCHER_URL --environment $RANCHER_STAGING_ENV --stack $RANCHER_STACK --service $RANCHER_STS_PHP_SERVICE --start-before-stopping
-    - upgrade --rancher-key $RANCHER_ACCESS_KEY --rancher-secret $RANCHER_SECRET_KEY --rancher-url $RANCHER_URL --environment $RANCHER_STAGING_ENV --stack $RANCHER_STACK --service $RANCHER_STS_WEB_SERVICE --start-before-stopping
+    - upgrade --rancher-key $RANCHER_ACCESS_KEY --rancher-secret $RANCHER_SECRET_KEY --rancher-url $RANCHER_URL --environment $RANCHER_STAGING_ENV --stack $RANCHER_STACK --service $RANCHER_STS_WEB_BACKOFFICE_SERVICE --start-before-stopping
+    - upgrade --rancher-key $RANCHER_ACCESS_KEY --rancher-secret $RANCHER_SECRET_KEY --rancher-url $RANCHER_URL --environment $RANCHER_STAGING_ENV --stack $RANCHER_STACK --service $RANCHER_STS_WEB_API_MOBILE_SERVICE --start-before-stopping
   environment:
     name: staging
     url: http://sts-pprd.medialab.sciences-po.fr
