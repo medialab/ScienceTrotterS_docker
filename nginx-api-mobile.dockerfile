@@ -1,12 +1,11 @@
 FROM nginx:1.13-alpine
 
 
-ARG API_URL=http://localhost/api
+ARG API_URL=http://localhost:8080/api
 ENV API_URL=${API_URL}
 
 COPY /ScienceTrotterS_API /api
 COPY /ScienceTrotterS_mobile /mobile_app
-COPY /ScienceTrotterS_backoffice /backoffice
 
 WORKDIR /mobile_app
 
@@ -22,7 +21,7 @@ RUN apk update \
     && rm -fr node_modules \
     && rm /var/cache/apk/*
 
-COPY ./nginx-prod.conf /etc/nginx/conf.d/default.template
+COPY ./nginx-api-mobile.conf /etc/nginx/conf.d/default.template
 
 RUN apk --no-cache add shadow && usermod -u 82 nginx && groupmod -g 82 nginx
 
