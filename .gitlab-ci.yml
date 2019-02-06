@@ -42,7 +42,7 @@ build_web_backoffice_staging:
     - docker push $WEB_BACKOFFICE_IMAGE_NAME
   environment:
     name: staging
-    url: http://sts-backoffice-pprd.medialab.sciences-po.fr
+    url: http://sts-bo-pprd.medialab.sciences-po.fr
   only:
     - staging
 
@@ -54,7 +54,7 @@ build_web_backoffice_staging:
     - docker push $WEB_BACKOFFICE_IMAGE_NAME
   environment:
     name: staging
-    url: http://sts-backoffice.medialab.sciences-po.fr
+    url: http://sts-bo.medialab.sciences-po.fr
   only:
     - staging
 
