@@ -14,8 +14,8 @@ build_web_api_staging:
   stage: build
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - docker build --build-arg "API_URL=$CI_ENVIRONMENT_URL/api" -t $WEB_IMAGE_NAME -f nginx-API-mobile.dockerfile .
-    - docker push $WEB_IMAGE_NAME
+    - docker build --build-arg "API_URL=$CI_ENVIRONMENT_URL/api" -t $WEB_API_MOBILE_IMAGE_NAME -f nginx-API-mobile.dockerfile .
+    - docker push $WEB_API_MOBILE_IMAGE_NAME
   environment:
     name: staging
     url: http://sts-pprd.medialab.sciences-po.fr
@@ -26,8 +26,8 @@ build_web_api_prod:
   stage: build
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - docker build --build-arg "API_URL=$CI_ENVIRONMENT_URL/api" -t $WEB_IMAGE_NAME -f nginx-API-mobile.dockerfile .
-    - docker push $WEB_IMAGE_NAME
+    - docker build --build-arg "API_URL=$CI_ENVIRONMENT_URL/api" -t $WEB_API_MOBILE_IMAGE_NAME -f nginx-API-mobile.dockerfile .
+    - docker push $WEB_API_MOBILE_IMAGE_NAME
   environment:
     name: production
     url: https://sts.medialab.sciences-po.fr
@@ -38,8 +38,8 @@ build_web_backoffice_staging:
   stage: build
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - docker build --build-arg "API_URL=$CI_ENVIRONMENT_URL/api" -t $WEB_IMAGE_NAME -f nginx-backoffice.dockerfile .
-    - docker push $WEB_IMAGE_NAME
+    - docker build --build-arg "API_URL=$CI_ENVIRONMENT_URL/api" -t $WEB_BACKOFFICE_IMAGE_NAME -f nginx-backoffice.dockerfile .
+    - docker push $WEB_BACKOFFICE_IMAGE_NAME
   environment:
     name: staging
     url: http://sts-backoffice-pprd.medialab.sciences-po.fr
@@ -50,8 +50,8 @@ build_web_backoffice_staging:
   stage: build
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - docker build --build-arg "API_URL=$CI_ENVIRONMENT_URL/api" -t $WEB_IMAGE_NAME -f nginx-backoffice.dockerfile .
-    - docker push $WEB_IMAGE_NAME
+    - docker build --build-arg "API_URL=$CI_ENVIRONMENT_URL/api" -t $WEB_BACKOFFICE_IMAGE_NAME -f nginx-backoffice.dockerfile .
+    - docker push $WEB_BACKOFFICE_IMAGE_NAME
   environment:
     name: staging
     url: http://sts-backoffice.medialab.sciences-po.fr
