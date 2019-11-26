@@ -23,6 +23,7 @@ file_env() {
 }
 
 file_env 'POSTGRES_PASSWORD'
+file_env 'MAP_API_KEY'
 
 chown -R www-data:www-data $UPLOAD_PATH
 
