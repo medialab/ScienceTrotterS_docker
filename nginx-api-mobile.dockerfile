@@ -15,6 +15,7 @@ RUN apk update \
 	&& mv src/manifest.new.json src/manifest.json \
 	&& npm install ionic@3.19.1 \
     && npm install \
+    && npm rebuild node-sass \
     && npm run build\
     && npm cache clean --force \
     && apk del git nodejs jq \
