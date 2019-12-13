@@ -3,7 +3,7 @@ FROM php:7.2-fpm-alpine
 ARG DEVMODE
 RUN if [ "$DEVMODE" = "true" ] ; then apk --no-cache add git unzip zip vim ; fi
 
-RUN apk --no-cache add postgresql-dev \
+RUN apk --no-cache add postgresql-dev bash\
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
     && docker-php-ext-install pdo pdo_pgsql 
 
