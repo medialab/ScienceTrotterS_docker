@@ -13,9 +13,10 @@ RUN apk update \
     && apk add git nodejs jq \
 	&& jq '.configuration.endpoint.data=env.API_URL | .configuration.endpoint.assets="\(env.API_URL)/ressources/upload/"' src/manifest.json > src/manifest.new.json \
 	&& mv src/manifest.new.json src/manifest.json \
-	&& npm install ionic@3.19.1 \
+	&& npm install ionic@3.19.1 cordova\
     && npm install \
     && npm rebuild node-sass \
+    && cordova platform add browser --save \
     && npm run build\
     && npm cache clean --force \
     && apk del git nodejs jq \
