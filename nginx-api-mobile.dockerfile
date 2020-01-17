@@ -16,7 +16,6 @@ RUN apk update \
 	&& npm install ionic@3.19.1 cordova\
     && npm install \
     && npm rebuild node-sass \
-    && ionic cordova platform add browser --save \
     && npm run build\
     && npm cache clean --force \
     && apk del git nodejs jq \
