@@ -14,7 +14,7 @@ variables:
 
 services:
     - docker:stable-dind
-  
+
 build_web_api:
   stage: build
   script:
@@ -25,6 +25,7 @@ build_web_api:
     name: $CI_COMMIT_REF_SLUG
     url: $FRONTURL
   only:
+    - master
     - staging
     - production
 
@@ -38,6 +39,7 @@ build_web_backoffice:
     name: $CI_COMMIT_REF_SLUG
     url: $BACKOFFICEURL
   only:
+    - master
     - staging
     - production
 
@@ -48,6 +50,7 @@ build_php:
     - docker build -t $PHP_IMAGE_NAME -f phpcomposer.dockerfile .
     - docker push $PHP_IMAGE_NAME
   only:
+    - master
     - staging
     - production
 
