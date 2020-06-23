@@ -9,6 +9,11 @@ variables:
   WEB_API_MOBILE_IMAGE_NAME: $CI_REGISTRY_IMAGE/sts_web_api_mobile:$CI_COMMIT_REF_SLUG
   PHP_IMAGE_NAME: $CI_REGISTRY_IMAGE/sts_php:$CI_COMMIT_REF_SLUG
   GIT_SUBMODULE_STRATEGY: recursive
+  DOCKER_HOST: tcp://127.0.0.1:2375
+  DOCKER_TLS_CERTDIR: ""
+
+services:
+    - docker:stable-dind
   
 build_web_api:
   stage: build
@@ -45,7 +50,7 @@ build_php:
   only:
     - staging
     - production
-   
+
 deploy:
   stage: deploy
   image: cdrx/rancher-gitlab-deploy
