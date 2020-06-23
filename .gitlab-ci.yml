@@ -27,7 +27,7 @@ build_web_api:
   only:
     - master
     - staging
-    - production
+    - prod
 
 build_web_backoffice:
   stage: build
@@ -41,7 +41,7 @@ build_web_backoffice:
   only:
     - master
     - staging
-    - production
+    - prod
 
 build_php:
   stage: build
@@ -52,7 +52,7 @@ build_php:
   only:
     - master
     - staging
-    - production
+    - prod
 
 deploy:
   stage: deploy
@@ -66,4 +66,4 @@ deploy:
     url: $FRONTURL
   only:
     - staging
-    - production
+    - prod
