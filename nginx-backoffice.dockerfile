@@ -4,6 +4,9 @@ FROM nginx:1.13-alpine
 ARG API_URL=http://localhost/api
 ENV API_URL=${API_URL}
 
+ENV PHP_HOST=php
+ENV PHP_PORT=9000
+
 COPY /ScienceTrotterS_backoffice /backoffice
 
 WORKDIR /mobile_app

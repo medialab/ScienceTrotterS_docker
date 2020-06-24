@@ -1,0 +1,33 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: sts
+
+namePrefix: sts-
+
+bases:
+  - ../../base/
+
+resources:
+  - ingress.yml
+
+patchesStrategicMerge:
+  - env.yml
+
+commonLabels:
+  stage: development
+
+secretGenerator:
+- name: postgres
+  env: postgres.env
+
+- name: sts
+  env: sts.env
+
+images:
+  - name: gitlab.sciences-po.fr:4567/medialab/sciencetrotters_docker/sts_web_api_mobile
+    newTag: 'staging'
+  - name: gitlab.sciences-po.fr:4567/medialab/sciencetrotters_docker/sts_php
+    newTag: 'staging'
+  - name: gitlab.sciences-po.fr:4567/medialab/sciencetrotters_docker/sts_web_backoffice
+    newTag: 'staging'

@@ -9,32 +9,37 @@ variables:
   WEB_API_MOBILE_IMAGE_NAME: $CI_REGISTRY_IMAGE/sts_web_api_mobile:$CI_COMMIT_REF_SLUG
   PHP_IMAGE_NAME: $CI_REGISTRY_IMAGE/sts_php:$CI_COMMIT_REF_SLUG
   GIT_SUBMODULE_STRATEGY: recursive
-  
+  DOCKER_HOST: tcp://127.0.0.1:2375
+  DOCKER_TLS_CERTDIR: ""
+
+services:
+    - docker:stable-dind
+
 build_web_api:
   stage: build
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - docker build --build-arg "API_URL=$CI_ENVIRONMENT_URL/api" -t $WEB_API_MOBILE_IMAGE_NAME -f nginx-api-mobile.dockerfile .
+    - docker build --build-arg "API_URL=$FRONTURL/api" -t $WEB_API_MOBILE_IMAGE_NAME -f nginx-api-mobile.dockerfile .
     - docker push $WEB_API_MOBILE_IMAGE_NAME
   environment:
     name: $CI_COMMIT_REF_SLUG
-    url: $FRONTURL
   only:
+    - master
     - staging
-    - production
+    - prod
 
 build_web_backoffice:
   stage: build
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - docker build --build-arg "API_URL=$CI_ENVIRONMENT_URL/api" -t $WEB_BACKOFFICE_IMAGE_NAME -f nginx-backoffice.dockerfile .
+    - docker build --build-arg "API_URL=$BACKOFFICEURL/api" -t $WEB_BACKOFFICE_IMAGE_NAME -f nginx-backoffice.dockerfile .
     - docker push $WEB_BACKOFFICE_IMAGE_NAME
   environment:
     name: $CI_COMMIT_REF_SLUG
-    url: $BACKOFFICEURL
   only:
+    - master
     - staging
-    - production
+    - prod
 
 build_php:
   stage: build
@@ -43,19 +48,34 @@ build_php:
     - docker build -t $PHP_IMAGE_NAME -f phpcomposer.dockerfile .
     - docker push $PHP_IMAGE_NAME
   only:
+    - master
     - staging
-    - production
-   
+    - prod
+
 deploy:
+  image:
+    name: jrisp/kubehelper:latest
+    entrypoint: [""]
   stage: deploy
-  image: cdrx/rancher-gitlab-deploy
+  dependencies:
+    - build_web_api
+    - build_web_backoffice
+    - build_php
   script:
-    - upgrade --rancher-key $RANCHER_ACCESS_KEY --rancher-secret $RANCHER_SECRET_KEY --rancher-url $RANCHER_URL --environment $RANCHER_ENV --stack $RANCHER_STACK --service $RANCHER_STS_PHP_SERVICE --start-before-stopping
-    - upgrade --rancher-key $RANCHER_ACCESS_KEY --rancher-secret $RANCHER_SECRET_KEY --rancher-url $RANCHER_URL --environment $RANCHER_ENV --stack $RANCHER_STACK --service $RANCHER_STS_WEB_BACKOFFICE_SERVICE --start-before-stopping
-    - upgrade --rancher-key $RANCHER_ACCESS_KEY --rancher-secret $RANCHER_SECRET_KEY --rancher-url $RANCHER_URL --environment $RANCHER_ENV --stack $RANCHER_STACK --service $RANCHER_STS_WEB_API_MOBILE_SERVICE --start-before-stopping
+    - NS=sts
+    - kubectl config set-cluster k8s --server="$KUBE_URL" --certificate-authority="$KUBE_CA_PEM_FILE"
+    - kubectl config set-credentials gitlab-admin --token="$KUBE_TOKEN"
+    - kubectl config set-context default --cluster=k8s --user=gitlab-admin
+    - kubectl config use-context default
+    - kubectl apply -f k8s/namespace.yml
+    - cp ${POSTGRES_SECRETS} k8s/overlays/$CI_COMMIT_REF_SLUG/postgres.env
+    - cp ${STS_SECRETS} k8s/overlays/$CI_COMMIT_REF_SLUG/sts.env
+    - kubectl apply -k k8s/overlays/$CI_COMMIT_REF_SLUG
+    - kubectl -n ${NS} rollout restart deployment ${NS}-php
+    - kubectl -n ${NS} rollout restart deployment ${NS}-bo
+    - kubectl -n ${NS} rollout restart deployment ${NS}-web
   environment:
     name: $CI_COMMIT_REF_SLUG
-    url: $FRONTURL
   only:
-    - staging
-    - production
+   - staging
+   - prod

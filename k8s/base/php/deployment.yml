@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: php
+  template:
+    metadata:
+      labels:
+        component: php
+    spec:
+      imagePullSecrets:
+        - name: gitlab
+      containers:
+        - name: php
+          image: gitlab.sciences-po.fr:4567/medialab/sciencetrotters_docker/sts_php:latest
+          env:
+            - name: API_URL
+              value: 'sts-web.sts.svc.cluster.local:5000'
+            - name: BACKOFFICE_URL
+              value: 'sts-bo.sts.svc.cluster.local:80'
+            - name: API_SSL
+              value: 'false'
+            - name: POSTGRES_PORT
+              value: '5432'
+            - name: POSTGRES_CHARSET
+              value: 'UTF8'
+            - name: UPLOAD_PATH
+              value: '/ressources/upload/'
+            - name: API_ALLOW_ORIGIN
+              value: '*'
+            - name: POSTGRES_HOST
+              value: sts-db
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres
+                  key: db_name
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres
+                  key: user_name
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres
+                  key: user_password
+            - name: API_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: sts
+                  key: api_pass
+            - name: MAP_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: sts
+                  key: map_api_key
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: upload-vol
+              mountPath: /ressources/upload
+      volumes:
+        - name: upload-vol
+          persistentVolumeClaim:
+            claimName: upload-pvc
