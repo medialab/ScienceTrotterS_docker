@@ -19,11 +19,10 @@ build_web_api:
   stage: build
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - docker build --build-arg "API_URL=$CI_ENVIRONMENT_URL/api" -t $WEB_API_MOBILE_IMAGE_NAME -f nginx-api-mobile.dockerfile .
+    - docker build --build-arg "API_URL=$FRONTURL/api" -t $WEB_API_MOBILE_IMAGE_NAME -f nginx-api-mobile.dockerfile .
     - docker push $WEB_API_MOBILE_IMAGE_NAME
   environment:
     name: $CI_COMMIT_REF_SLUG
-    url: $FRONTURL
   only:
     - master
     - staging
@@ -33,11 +32,10 @@ build_web_backoffice:
   stage: build
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - docker build --build-arg "API_URL=$CI_ENVIRONMENT_URL/api" -t $WEB_BACKOFFICE_IMAGE_NAME -f nginx-backoffice.dockerfile .
+    - docker build --build-arg "API_URL=$BACKOFFICEURL/api" -t $WEB_BACKOFFICE_IMAGE_NAME -f nginx-backoffice.dockerfile .
     - docker push $WEB_BACKOFFICE_IMAGE_NAME
   environment:
     name: $CI_COMMIT_REF_SLUG
-    url: $BACKOFFICEURL
   only:
     - master
     - staging
