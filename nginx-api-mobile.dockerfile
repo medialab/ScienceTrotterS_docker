@@ -4,6 +4,9 @@ FROM node:8.9.3 AS mobile_app
 ARG API_URL=http://localhost:8080/api
 ENV API_URL=${API_URL}
 
+ENV PHP_HOST=php
+ENV PHP_PORT=9000
+
 WORKDIR /mobile_app
 
 # jq in Debian repo is too old to get env vars
