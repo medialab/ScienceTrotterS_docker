@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bo
+spec:
+  ports:
+    - port: 80
+  selector:
+    component: bo
+  clusterIP: None
