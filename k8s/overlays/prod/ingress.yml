@@ -4,13 +4,19 @@ metadata:
   name: ingress
   annotations:
     ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/server-alias: bhht-prod.medialab.sciences-po.fr
 spec:
   rules:
-  - host: bhht.medialab.sciences-po.fr
+  - host: sts.medialab.sciences-po.fr
     http:
       paths:
         - path: /
           backend:
-            serviceName: client
+            serviceName: web
+            servicePort: 80
+  - host: sts-bo.medialab.sciences-po.fr
+    http:
+      paths:
+        - path: /
+          backend:
+            serviceName: bo
             servicePort: 80
