@@ -4,6 +4,8 @@ metadata:
   name: ingress
   annotations:
     ingress.kubernetes.io/rewrite-target: /
+    ingress.kubernetes.io/enable-cors: "true"
+    ingress.kubernetes.io/cors-allow-origin: https://sts-pprd.medialab.sciences-po.fr https://sts-bo-pprd.medialab.sciences-po.fr
 spec:
   rules:
   - host: sts-pprd.medialab.sciences-po.fr
