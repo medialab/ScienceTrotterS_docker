@@ -6,6 +6,7 @@ metadata:
     ingress.kubernetes.io/rewrite-target: /
     ingress.kubernetes.io/enable-cors: "true"
     ingress.kubernetes.io/cors-allow-origin: https://sts.medialab.sciences-po.fr https://sts-bo.medialab.sciences-po.fr
+    nginx.ingress.kubernetes.io/proxy-body-size: 20m
 spec:
   rules:
   - host: sts.medialab.sciences-po.fr
