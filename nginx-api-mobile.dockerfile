@@ -21,7 +21,7 @@ RUN npm install -g @ionic/cli \
 
 COPY /ScienceTrotterS_mobile /mobile_app
 
-RUN sed -i "s/API_DATA_URL/$env.API_URL/g" src/environments/environment.prod.ts
+RUN sed -i "s@API_DATA_URL@${API_URL}@g" src/environments/environment.prod.ts
 
 RUN npm rebuild node-sass
 
