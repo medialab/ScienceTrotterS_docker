@@ -1,5 +1,5 @@
 ## Pre-build static application
-FROM node:8.9.3 AS mobile_app
+FROM node:12.9.0 AS mobile_app
 
 ARG API_URL=http://localhost:8080/api
 ENV API_URL=${API_URL}
@@ -14,17 +14,14 @@ RUN wget -O /usr/local/bin/jq https://github.com/stedolan/jq/releases/download/j
   chmod +x /usr/local/bin/jq
 
 COPY /ScienceTrotterS_mobile/package.json /mobile_app/package.json
-COPY /ScienceTrotterS_mobile/config.xml /mobile_app/config.xml
+# COPY /ScienceTrotterS_mobile/config.xml /mobile_app/config.xml
 
-RUN npm install -g cordova@9.0.0 \
-  	&& npm install ionic@3.19.1 \
+RUN npm install -g @ionic/cli \
     && npm install
 
 COPY /ScienceTrotterS_mobile /mobile_app
 
-RUN jq '.configuration.endpoint.data=env.API_URL | .configuration.endpoint.assets="\(env.API_URL)/ressources/upload/"' src/manifest.json > src/manifest.new.json
-
-RUN mv src/manifest.new.json src/manifest.json
+RUN sed -i "s/API_DATA_URL/$env.API_URL/g" src/environments/environment.prod.ts
 
 RUN npm rebuild node-sass
 
