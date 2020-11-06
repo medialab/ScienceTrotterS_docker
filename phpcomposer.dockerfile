@@ -7,7 +7,7 @@ RUN apk --no-cache add postgresql-dev bash\
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
     && docker-php-ext-install pdo pdo_pgsql 
 
-RUN php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/local/bin --filename=composer
+RUN php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/local/bin --filename=composer --version=1.10.17
 
 COPY php-fpm.conf /usr/local/etc/php-fpm.d/sts.conf
 COPY ./ScienceTrotterS_API /api
